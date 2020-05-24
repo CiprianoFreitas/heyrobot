@@ -1,0 +1,23 @@
+{
+  "name": "Hey Robot",
+  "description": "Hey Robot is an application to play with your digital assistant",
+  "short_name": "Hey Robot",
+  "theme_color": "#feff5f",
+  "background_color": "#feff5f",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "Scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
