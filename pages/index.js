@@ -18,15 +18,25 @@ export default () => {
   useEffect(() => {});
   return (
     <div>
-      <h1>Hey Robot!</h1>
       <div className="scoring">
-        <span className="score">
-          <strong>{isTeam1 && "☛ "}Team 1</strong> - {team1Points}
-        </span>
-        <span className="score">
-          <strong>{!isTeam1 && "☛ "}Team 2</strong> - {team2Points}
-        </span>
+        <div
+          className={`score
+          ${currentWords.length > 0 && isTeam1 ? "team-active" : ""}`}
+        >
+          <strong>
+            Team 1<h2>{team1Points}</h2>
+          </strong>
+        </div>
+        <div
+          className={`score
+          ${currentWords.length > 0 && !isTeam1 ? "team-active" : ""}`}
+        >
+          <strong>
+            Team 2<h2>{team2Points}</h2>
+          </strong>
+        </div>
       </div>
+      <h1 className="title">Hey Robot!</h1>
       <div className="final-score">
         {currentWords.length === 0 &&
           team1Points > team2Points &&
