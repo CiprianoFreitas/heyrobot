@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "next": "9.3.6",
+    "next-pwa": "^2.4.1",
     "react": "16.13.1",
     "react-dom": "16.13.1"
   },
