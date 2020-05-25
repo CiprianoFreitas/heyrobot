@@ -4,8 +4,34 @@ import { useState, useEffect } from "react";
 const words = require("../words.json");
 
 export default () => {
-  const [team1Points, setTeam1Points] = useState(0);
-  const [team2Points, setTeam2Points] = useState(0);
+  const useStateWithLocalStorage = (localStorageKey, defaultValue) => {
+    const [value, setValue] = React.useState(() => {
+      if (typeof window !== "undefined") {
+        return (
+          JSON.parse(localStorage.getItem(localStorageKey)) || defaultValue
+        );
+      } else {
+        return defaultValue;
+      }
+    });
+
+    React.useEffect(() => {
+      if (typeof window !== "undefined") {
+        localStorage.setItem(localStorageKey, JSON.stringify(value));
+      }
+    }, [value instanceof Array ? value.length : value]);
+
+    return [value, setValue];
+  };
+
+  const [team1Points, setTeam1Points] = useStateWithLocalStorage(
+    "team1Points",
+    0
+  );
+  const [team2Points, setTeam2Points] = useStateWithLocalStorage(
+    "team2Points",
+    0
+  );
 
   const currentGameWords = [];
   for (let i = 0; i < 16; i++) {
@@ -13,8 +39,11 @@ export default () => {
     currentGameWords.push(words[pickedIndex]);
     words.splice(pickedIndex, 1);
   }
-  const [currentWords, setCurrentWords] = useState(currentGameWords);
-  const [isTeam1, setIsTeam1] = useState(true);
+  const [currentWords, setCurrentWords] = useStateWithLocalStorage(
+    "currentWords",
+    currentGameWords
+  );
+  const [isTeam1, setIsTeam1] = useStateWithLocalStorage("isTeam1", true);
 
   useEffect(() => {});
   return (
