@@ -4,23 +4,37 @@ import { useState, useEffect } from "react";
 const words = require("../words.json");
 
 export default () => {
+  const generateWords = () => {
+    const currentGameWords = [];
+    const wordsCloned = Object.assign([], words);
+    for (let i = 0; i < 16; i++) {
+      const pickedIndex = Math.floor(Math.random() * wordsCloned.length);
+      currentGameWords.push(wordsCloned[pickedIndex]);
+      wordsCloned.splice(pickedIndex, 1);
+    }
+
+    return currentGameWords;
+  };
+
   const [team1Points, setTeam1Points] = useState(0);
   const [team2Points, setTeam2Points] = useState(0);
 
-  const currentGameWords = [];
-  for (let i = 0; i < 16; i++) {
-    const pickedIndex = Math.floor(Math.random() * words.length);
-    currentGameWords.push(words[pickedIndex]);
-    words.splice(pickedIndex, 1);
-  }
-  const [currentWords, setCurrentWords] = useState(currentGameWords);
+  const [currentWords, setCurrentWords] = useState(generateWords());
   const [isTeam1, setIsTeam1] = useState(true);
 
+  const restart = () => {
+    setTeam1Points(0);
+    setTeam2Points(0);
+    setCurrentWords(generateWords());
+    setIsTeam1(true);
+  };
+
   useEffect(() => {});
+
   return (
     <div>
       <Head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         <meta
@@ -51,22 +65,32 @@ export default () => {
         <meta name="msapplication-TileColor" content="#feff5f" />
         <meta name="theme-color" content="#feff5f" />
       </Head>
-      <div className="scoring">
-        <div
-          className={`score
+      <div className="hoverBoard">
+        <button
+          className="restart"
+          onClick={() => {
+            restart();
+          }}
+        >
+          Restart
+        </button>
+        <div className="scoring">
+          <div
+            className={`score
           ${currentWords.length > 0 && isTeam1 ? "team-active" : ""}`}
-        >
-          <strong>
-            Team 1<h2>{team1Points}</h2>
-          </strong>
-        </div>
-        <div
-          className={`score
+          >
+            <strong>
+              Team 1<h2>{team1Points}</h2>
+            </strong>
+          </div>
+          <div
+            className={`score
           ${currentWords.length > 0 && !isTeam1 ? "team-active" : ""}`}
-        >
-          <strong>
-            Team 2<h2>{team2Points}</h2>
-          </strong>
+          >
+            <strong>
+              Team 2<h2>{team2Points}</h2>
+            </strong>
+          </div>
         </div>
       </div>
       <h1 className="title">Hey Robot!</h1>
