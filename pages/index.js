@@ -66,14 +66,16 @@ export default () => {
         <meta name="theme-color" content="#feff5f" />
       </Head>
       <div className="hoverBoard">
-        <button
-          className="restart"
-          onClick={() => {
-            restart();
-          }}
-        >
-          Restart
-        </button>
+        {currentWords.length > 0 && (
+          <button
+            className="restart"
+            onClick={() => {
+              restart();
+            }}
+          >
+            Restart
+          </button>
+        )}
         <div className="scoring">
           <div
             className={`score
@@ -101,6 +103,18 @@ export default () => {
         {currentWords.length === 0 &&
           team2Points > team1Points &&
           "Team 2 Wins 🙌🏻"}
+        {currentWords.length === 0 && (
+          <div>
+            <button
+              className="restart"
+              onClick={() => {
+                restart();
+              }}
+            >
+              Restart
+            </button>
+          </div>
+        )}
       </div>
       <ul>
         {currentWords.map((w, i) => {
