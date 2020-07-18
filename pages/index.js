@@ -1,70 +1,37 @@
 import Card from "../components/card";
-import Head from "next/head";
 import { useState, useEffect } from "react";
-const words = require("../words.json");
+import CustomHead from "../components/CustomHead";
+const allTheWordsAvailable = require("../words.json");
 
-export default () => {
-  const generateWords = () => {
-    const currentGameWords = [];
-    const wordsCloned = Object.assign([], words);
-    for (let i = 0; i < 16; i++) {
-      const pickedIndex = Math.floor(Math.random() * wordsCloned.length);
-      currentGameWords.push(wordsCloned[pickedIndex]);
-      wordsCloned.splice(pickedIndex, 1);
-    }
+const generateWords = (words) => {
+  const pickedWords = [];
+  const wordsCloned = Object.assign([], words);
+  for (let i = 0; i < 16; i++) {
+    const pickedIndex = Math.floor(Math.random() * wordsCloned.length);
+    pickedWords.push(wordsCloned[pickedIndex]);
+    wordsCloned.splice(pickedIndex, 1);
+  }
 
-    return currentGameWords;
-  };
+  return pickedWords;
+};
 
+const Index = ({ words = [] }) => {
   const [team1Points, setTeam1Points] = useState(0);
   const [team2Points, setTeam2Points] = useState(0);
 
-  const [currentWords, setCurrentWords] = useState(generateWords());
+  const [currentWords, setCurrentWords] = useState(words);
   const [isTeam1, setIsTeam1] = useState(true);
 
   const restart = () => {
     setTeam1Points(0);
     setTeam2Points(0);
-    setCurrentWords(generateWords());
+    setCurrentWords(generateWords(allTheWordsAvailable));
     setIsTeam1(true);
   };
 
-  useEffect(() => {});
-
   return (
     <div>
-      <Head>
-        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-        <meta
-          name="description"
-          content="Hey Robot is an application to play with your digital assistant"
-        />
-        <title>Hey Robot</title>
-
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/apple-touch-icon.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon-16x16.png"
-        />
-        <link rel="manifest" href="/manifest.json" />
-        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#a65c83" />
-        <meta name="msapplication-TileColor" content="#feff5f" />
-        <meta name="theme-color" content="#feff5f" />
-      </Head>
+      <CustomHead />
       <div className="hoverBoard">
         {currentWords.length > 0 && (
           <button
@@ -124,10 +91,9 @@ export default () => {
               word={w.word}
               points={w.points}
               onGotIt={(_, points) => {
-                const things = currentWords;
-                things.splice(i, 1);
-                console.log("things", things);
-                setCurrentWords(things);
+                const remainingWords = currentWords;
+                remainingWords.splice(i, 1);
+                setCurrentWords(remainingWords);
 
                 if (isTeam1) setTeam1Points(team1Points + points);
                 else setTeam2Points(team2Points + points);
@@ -141,3 +107,13 @@ export default () => {
     </div>
   );
 };
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      words: generateWords(allTheWordsAvailable),
+    },
+  };
+}
+
+export default Index;
