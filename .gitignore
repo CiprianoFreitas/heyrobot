@@ -32,3 +32,8 @@ sketch
 public/workbox-*
 public/sw-*
 public/sw.js
+
+out
+# Local Netlify folder
+.netlify
+.vercel
