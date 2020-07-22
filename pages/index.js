@@ -1,5 +1,4 @@
 import Card from "../components/card";
-import { useState, useEffect } from "react";
 import CustomHead from "../components/CustomHead";
 const allTheWordsAvailable = require("../words.json");
 
@@ -15,12 +14,41 @@ const generateWords = (words) => {
   return pickedWords;
 };
 
-const Index = ({ words = [] }) => {
-  const [team1Points, setTeam1Points] = useState(0);
-  const [team2Points, setTeam2Points] = useState(0);
+const useStateWithLocalStorage = (localStorageKey, defaultValue) => {
+  const [value, setValue] = React.useState(() => {
+    if (typeof window !== "undefined") {
+      const localStorageValue = JSON.parse(
+        localStorage.getItem(localStorageKey)
+      );
+      return localStorageValue != null ? localStorageValue : defaultValue;
+    }
+    return defaultValue;
+  });
 
-  const [currentWords, setCurrentWords] = useState(words);
-  const [isTeam1, setIsTeam1] = useState(true);
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(localStorageKey, JSON.stringify(value));
+    }
+  }, [value instanceof Array ? value.length : value]);
+
+  return [value, setValue];
+};
+
+const Index = ({ words = [] }) => {
+  const [team1Points, setTeam1Points] = useStateWithLocalStorage(
+    "team1Points",
+    0
+  );
+  const [team2Points, setTeam2Points] = useStateWithLocalStorage(
+    "team2Points",
+    0
+  );
+
+  const [currentWords, setCurrentWords] = useStateWithLocalStorage(
+    "currentWords",
+    words
+  );
+  const [isTeam1, setIsTeam1] = useStateWithLocalStorage("isTeam1", true);
 
   const restart = () => {
     setTeam1Points(0);
