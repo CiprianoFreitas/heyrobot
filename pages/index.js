@@ -17,10 +17,12 @@ const generateWords = (words) => {
 const useStateWithLocalStorage = (localStorageKey, defaultValue) => {
   const [value, setValue] = React.useState(() => {
     if (typeof window !== "undefined") {
-      return JSON.parse(localStorage.getItem(localStorageKey)) || defaultValue;
-    } else {
-      return defaultValue;
+      const localStorageValue = JSON.parse(
+        localStorage.getItem(localStorageKey)
+      );
+      return localStorageValue != null ? localStorageValue : defaultValue;
     }
+    return defaultValue;
   });
 
   React.useEffect(() => {
