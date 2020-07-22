@@ -28,3 +28,13 @@ sketch
 # End of https://www.gitignore.io/api/code,react
 
 .next
+
+public/workbox-*
+public/sw-*
+public/sw.js
+public/*.map
+
+out
+# Local Netlify folder
+.netlify
+.vercel

@@ -7,7 +7,7 @@ body {
 
 .title {
   text-align: center;
-  margin: 5rem 0 6rem;
+  margin: 6rem 0 8rem;
 }
 
 ul {
@@ -55,7 +55,7 @@ button:hover {
   text-align: right;
 }
 
-.scoring {
+.hoverBoard {
   font-size: 1.5rem;
   position: fixed;
   z-index: 1;
@@ -63,6 +63,17 @@ button:hover {
   transform: rotate(3deg);
   right: 2rem;
   top: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.restart {
+  height: 2rem;
+  color: initial;
+  box-sizing: content-box;
+}
+
+.scoring {
   display: flex;
 }
 
