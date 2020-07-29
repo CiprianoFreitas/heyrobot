@@ -19,26 +19,6 @@ const getState = (localStorageKey, defaultValue) => {
   return localStorageValue != null ? localStorageValue : defaultValue;
 };
 
-// const useStateWithLocalStorage = (localStorageKey, defaultValue) => {
-//   const [value, setValue] = React.useState(() => {
-//     if (typeof window !== "undefined") {
-//       const localStorageValue = JSON.parse(
-//         localStorage.getItem(localStorageKey)
-//       );
-//       return localStorageValue != null ? localStorageValue : defaultValue;
-//     }
-//     return defaultValue;
-//   });
-
-//   React.useEffect(() => {
-//     if (typeof window !== "undefined") {
-//       localStorage.setItem(localStorageKey, JSON.stringify(value));
-//     }
-//   }, [value instanceof Array ? value.length : value]);
-
-//   return [value, setValue];
-// };
-
 const Index = () => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [team1Points, setTeam1Points] = React.useState(0);
