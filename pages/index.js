@@ -14,41 +14,63 @@ const generateWords = (words) => {
   return pickedWords;
 };
 
-const useStateWithLocalStorage = (localStorageKey, defaultValue) => {
-  const [value, setValue] = React.useState(() => {
-    if (typeof window !== "undefined") {
-      const localStorageValue = JSON.parse(
-        localStorage.getItem(localStorageKey)
-      );
-      return localStorageValue != null ? localStorageValue : defaultValue;
-    }
-    return defaultValue;
-  });
-
-  React.useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem(localStorageKey, JSON.stringify(value));
-    }
-  }, [value instanceof Array ? value.length : value]);
-
-  return [value, setValue];
+const getState = (localStorageKey, defaultValue) => {
+  const localStorageValue = JSON.parse(localStorage.getItem(localStorageKey));
+  return localStorageValue != null ? localStorageValue : defaultValue;
 };
 
-const Index = ({ words = [] }) => {
-  const [team1Points, setTeam1Points] = useStateWithLocalStorage(
-    "team1Points",
-    0
-  );
-  const [team2Points, setTeam2Points] = useStateWithLocalStorage(
-    "team2Points",
-    0
-  );
+// const useStateWithLocalStorage = (localStorageKey, defaultValue) => {
+//   const [value, setValue] = React.useState(() => {
+//     if (typeof window !== "undefined") {
+//       const localStorageValue = JSON.parse(
+//         localStorage.getItem(localStorageKey)
+//       );
+//       return localStorageValue != null ? localStorageValue : defaultValue;
+//     }
+//     return defaultValue;
+//   });
 
-  const [currentWords, setCurrentWords] = useStateWithLocalStorage(
-    "currentWords",
-    words
-  );
-  const [isTeam1, setIsTeam1] = useStateWithLocalStorage("isTeam1", true);
+//   React.useEffect(() => {
+//     if (typeof window !== "undefined") {
+//       localStorage.setItem(localStorageKey, JSON.stringify(value));
+//     }
+//   }, [value instanceof Array ? value.length : value]);
+
+//   return [value, setValue];
+// };
+
+const Index = () => {
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [team1Points, setTeam1Points] = React.useState(0);
+
+  const [team2Points, setTeam2Points] = React.useState(0);
+
+  const [currentWords, setCurrentWords] = React.useState([]);
+
+  const [isTeam1, setIsTeam1] = React.useState(true);
+
+  React.useEffect(() => {
+    setTeam1Points(getState("team1Points", 0));
+    setTeam2Points(getState("team2Points", 0));
+    setCurrentWords(
+      getState("currentWords", generateWords(allTheWordsAvailable))
+    );
+    setIsTeam1(getState("isTeam1", true));
+    setIsLoading(false);
+  }, []);
+
+  React.useEffect(() => {
+    localStorage.setItem("team1Points", JSON.stringify(team1Points));
+  }, [team1Points]);
+  React.useEffect(() => {
+    localStorage.setItem("team2Points", JSON.stringify(team2Points));
+  }, [team2Points]);
+  React.useEffect(() => {
+    localStorage.setItem("currentWords", JSON.stringify(currentWords));
+  }, [currentWords, currentWords.length]);
+  React.useEffect(() => {
+    localStorage.setItem("isTeam1", JSON.stringify(isTeam1));
+  }, [isTeam1]);
 
   const restart = () => {
     setTeam1Points(0);
@@ -98,7 +120,8 @@ const Index = ({ words = [] }) => {
         {currentWords.length === 0 &&
           team2Points > team1Points &&
           "Team 2 Wins 🙌🏻"}
-        {currentWords.length === 0 && (
+        {isLoading && <div className="spinner"></div>}
+        {currentWords.length === 0 && !isLoading && (
           <div>
             <button
               className="restart"
@@ -137,11 +160,7 @@ const Index = ({ words = [] }) => {
 };
 
 export async function getServerSideProps(context) {
-  return {
-    props: {
-      words: generateWords(allTheWordsAvailable),
-    },
-  };
+  return { props: {} };
 }
 
 export default Index;
