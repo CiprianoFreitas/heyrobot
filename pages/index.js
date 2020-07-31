@@ -1,5 +1,6 @@
 import Card from "../components/card";
 import CustomHead from "../components/CustomHead";
+import { useState, useEffect } from "react";
 const allTheWordsAvailable = require("../words.json");
 
 const generateWords = (words) => {
@@ -20,16 +21,16 @@ const getState = (localStorageKey, defaultValue) => {
 };
 
 const Index = () => {
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [team1Points, setTeam1Points] = React.useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [team1Points, setTeam1Points] = useState(0);
 
-  const [team2Points, setTeam2Points] = React.useState(0);
+  const [team2Points, setTeam2Points] = useState(0);
 
-  const [currentWords, setCurrentWords] = React.useState([]);
+  const [currentWords, setCurrentWords] = useState([]);
 
-  const [isTeam1, setIsTeam1] = React.useState(true);
+  const [isTeam1, setIsTeam1] = useState(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setTeam1Points(getState("team1Points", 0));
     setTeam2Points(getState("team2Points", 0));
     setCurrentWords(
@@ -39,16 +40,16 @@ const Index = () => {
     setIsLoading(false);
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     localStorage.setItem("team1Points", JSON.stringify(team1Points));
   }, [team1Points]);
-  React.useEffect(() => {
+  useEffect(() => {
     localStorage.setItem("team2Points", JSON.stringify(team2Points));
   }, [team2Points]);
-  React.useEffect(() => {
+  useEffect(() => {
     localStorage.setItem("currentWords", JSON.stringify(currentWords));
   }, [currentWords, currentWords.length]);
-  React.useEffect(() => {
+  useEffect(() => {
     localStorage.setItem("isTeam1", JSON.stringify(isTeam1));
   }, [isTeam1]);
 
