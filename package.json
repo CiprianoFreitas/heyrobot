@@ -9,10 +9,10 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "9.3.6",
-    "next-pwa": "^2.4.1",
-    "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "next": "10.0.4",
+    "next-pwa": "^5.0.2",
+    "react": "17.0.1",
+    "react-dom": "17.0.1"
   },
   "license": "ISC"
 }
